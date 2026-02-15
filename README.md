@@ -34,3 +34,56 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+
+# Smart Bookmark App
+
+A real-time bookmark manager built using Next.js (App Router), Supabase (Auth, PostgreSQL, Realtime), and Tailwind CSS.
+
+## 🚀 Live Demo
+Deployed on Vercel:
+[Live URL Here]
+
+---
+
+## ✨ Features
+
+- Google OAuth authentication (no email/password)
+- Private bookmarks per user using Row Level Security (RLS)
+- Add bookmarks (title + URL)
+- Delete bookmarks
+- Real-time updates across multiple tabs
+- Fully deployed on Vercel
+
+---
+
+## 🛠 Tech Stack
+
+- Next.js (App Router)
+- Supabase (Authentication, PostgreSQL Database, Realtime)
+- Tailwind CSS
+- Vercel (Deployment)
+
+---
+
+## 🧠 How It Works
+
+- Users authenticate via Google OAuth using Supabase Auth.
+- Each bookmark is stored with a `user_id` linked to `auth.users`.
+- Row Level Security ensures users can only view, insert, and delete their own bookmarks.
+- Supabase Realtime listens to database changes and updates the UI instantly without page refresh.
+
+---
+
+## 🔐 Database Schema
+
+```sql
+create table bookmarks (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamp default now(),
+  user_id uuid references auth.users not null,
+  title text not null,
+  url text not null
+);
