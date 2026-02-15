@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import { User } from "@supabase/supabase-js"
 
 type Bookmark = {
   id: string
@@ -15,7 +16,7 @@ export default function Dashboard() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
   const [title, setTitle] = useState("")
   const [url, setUrl] = useState("")
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   // Get logged in user
   useEffect(() => {
