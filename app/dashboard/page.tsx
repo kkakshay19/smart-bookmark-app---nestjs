@@ -20,6 +20,7 @@ export default function Dashboard() {
   // Get logged in user
   useEffect(() => {
     const getUser = async () => {
+      if (!supabase) return
       const { data } = await supabase.auth.getUser()
       setUser(data.user)
     }
@@ -28,6 +29,7 @@ export default function Dashboard() {
 
   // Fetch bookmarks
   const fetchBookmarks = async () => {
+    if (!supabase) return
     const { data } = await supabase
       .from("bookmarks")
       .select("*")
@@ -42,6 +44,7 @@ export default function Dashboard() {
 
   // Realtime subscription
   useEffect(() => {
+    if (!supabase) return
     const channel = supabase
       .channel("bookmarks-channel")
       .on(
@@ -54,13 +57,15 @@ export default function Dashboard() {
       .subscribe()
 
     return () => {
-      supabase.removeChannel(channel)
+      if (supabase) {
+        supabase.removeChannel(channel)
+      }
     }
   }, [])
 
   // Add bookmark
   const addBookmark = async () => {
-    if (!title || !url || !user) return
+    if (!title || !url || !user || !supabase) return
 
     await supabase.from("bookmarks").insert([
       {
@@ -76,10 +81,12 @@ export default function Dashboard() {
 
   // Delete bookmark
   const deleteBookmark = async (id: string) => {
+    if (!supabase) return
     await supabase.from("bookmarks").delete().eq("id", id)
   }
 
   const logout = async () => {
+    if (!supabase) return
     await supabase.auth.signOut()
     window.location.href = "/"
   }

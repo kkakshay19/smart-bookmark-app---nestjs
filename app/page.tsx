@@ -9,6 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     const checkUser = async () => {
+      if (!supabase) return
       const { data } = await supabase.auth.getSession()
       if (data.session) {
         router.push("/dashboard")
@@ -18,6 +19,7 @@ export default function Home() {
   }, [router])
 
   const login = async () => {
+    if (!supabase) return
     await supabase.auth.signInWithOAuth({
       provider: "google",
     })
